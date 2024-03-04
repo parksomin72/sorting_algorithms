@@ -4,7 +4,7 @@
 
 /**
  * counting_sort - Sorts an array of integers in ascending order
- *                 using the Counting sort algorithm.
+ * using the Counting sort algorithm.
  * @array: Pointer to the array to be sorted
  * @size: Size of the array
  */
@@ -14,13 +14,9 @@ void counting_sort(int *array, size_t size)
     int *output;
     int max = array[0];
     size_t i;
+
     if (array == NULL || size < 2)
         return;
-
-    /*int *count_array;
-    int *output;
-    int max = array[0];
-    size_t i;*/
 
     /* Find the maximum element in the array */
     for (i = 1; i < size; i++)
@@ -54,18 +50,18 @@ void counting_sort(int *array, size_t size)
         count_array[i] += count_array[i - 1];
 
     /* Build the output array */
-    output = malloc(size * sizeof(int));
-    if (output == NULL)
-    {
-        free(count_array);
-        return;
-    }
+output = malloc(size * sizeof(int));
+if (output == NULL)
+{
+    free(count_array);
+    return;
+}
 
-    for (i = size - 1; i < size; i--)
-    {
-        output[count_array[array[i]] - 1] = array[i];
-        count_array[array[i]]--;
-    }
+for (i = size; i > 0; i--)
+{
+    output[count_array[array[i - 1]] - 1] = array[i - 1];
+    count_array[array[i - 1]]--;
+}
 
     /* Copy the output array to the original array */
     for (i = 0; i < size; i++)
