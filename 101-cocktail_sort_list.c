@@ -1,14 +1,15 @@
 #include "sort.h"
 
 /**
- * cocktail_sort_list - sorts a doubly linked list of integers
- * in ascending order using the Cocktail Shaker sort algorithm
- * @list: pointer to the head of the doubly linked list
+ * cocktail_sort_list - Sorts a doubly linked list of integers in ascending order
+ *                      using the Cocktail shaker sort algorithm.
+ * @list: Pointer to the head of the doubly linked list
  */
 void cocktail_sort_list(listint_t **list)
 {
     int swapped;
-    listint_t *current;
+    listint_t *start = NULL;
+    listint_t *end = NULL;
 
     if (list == NULL || *list == NULL)
         return;
@@ -16,11 +17,11 @@ void cocktail_sort_list(listint_t **list)
     do {
         swapped = 0;
         /* Forward pass */
-        for (current = *list; current->next != NULL; current = current->next)
+        for (start = *list; start->next != end; start = start->next)
         {
-            if (current->n > current->next->n)
+            if (start->n > start->next->n)
             {
-                swap_nodes(current, list);
+                swap_nodes(start, list);
                 swapped = 1;
                 print_list(*list);
             }
@@ -30,11 +31,11 @@ void cocktail_sort_list(listint_t **list)
 
         swapped = 0;
         /* Backward pass */
-        for (; current->prev != NULL; current = current->prev)
+        for (end = start; end->prev != NULL; end = end->prev)
         {
-            if (current->n < current->prev->n)
+            if (end->n < end->prev->n)
             {
-                swap_nodes(current->prev, list);
+                swap_nodes(end->prev, list);
                 swapped = 1;
                 print_list(*list);
             }
@@ -43,9 +44,9 @@ void cocktail_sort_list(listint_t **list)
 }
 
 /**
- * swap_nodes - swaps two nodes in a doubly linked list
- * @node: pointer to the node to swap with its next node
- * @list: pointer to the head of the doubly linked list
+ * swap_nodes - Swaps two nodes in a doubly linked list
+ * @node: Pointer to the node to swap with its next node
+ * @list: Pointer to the head of the doubly linked list
  */
 void swap_nodes(listint_t *node, listint_t **list)
 {
