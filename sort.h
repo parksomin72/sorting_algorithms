@@ -17,6 +17,13 @@ typedef struct listint_s
 	struct listint_s *next;
 } listint_t;
 
+/* Definition of deck_node_t */
+typedef struct deck_node
+{
+	int value;
+	struct deck_node *prev;
+	struct deck_node *next;
+} deck_node_t;
 /* Function prototypes for sorting algorithms */
 void bubble_sort(int *array, size_t size);
 void insertion_sort_list(listint_t **list);
@@ -26,8 +33,16 @@ void swap(int *a, int *b);
 int lomuto_partition(int *array, int low, int high, size_t size);
 void quicksort(int *array, int low, int high, size_t size);
 void quick_sort(int *array, size_t size);
-
-/* Other sorting algorits */
+void shell_sort(int *array, size_t size);
+void cocktail_sort_list(listint_t **list);
+void counting_sort(int *array, size_t size);
+void merge_sort(int *array, size_t size);
+void heap_sort(int *array, size_t size);
+void radix_sort(int *array, size_t size);
+void bitonic_sort(int *array, size_t size);
+void quick_sort_hoare(int *array, size_t size);
+void sort_deck(deck_node_t **deck);
 void print_array(const int *array, size_t size);
+void shell_sort(int *array, size_t size);
 
 #endif /* SORT_H */
