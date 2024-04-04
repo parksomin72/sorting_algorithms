@@ -17,7 +17,7 @@ static int compare_cards(const void *a, const void *b)
 	char value_b = card_b->value[0];
 
 	if (kind_a != kind_b)
-		return kind_a - kind_b;
+		return (kind_a - kind_b);
 
 	if (value_a == 'A')
 		return -1;
@@ -27,7 +27,7 @@ static int compare_cards(const void *a, const void *b)
 		return -1;
 	if (value_b == 'K')
 		return 1;
-	return value_a - value_b;
+	return (value_a - value_b);
 }
 
 /**
