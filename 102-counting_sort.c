@@ -1,73 +1,93 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "sort.h"
+#include <stdlib.h>
+/**
+ * arr_zero_init - initialize array by 0
+ *
+ * @array: array to be initialized
+ * @size: size of the array
+ */
+void arr_zero_init(int *array, int size)
+{
+	int i;
+
+	for (i = 0; i < size; i++)
+		array[i] = 0;
+}
 
 /**
- * counting_sort - Sorts an array of integers in ascending order
- * using the Counting sort algorithm.
- * @array: Pointer to the array to be sorted
- * @size: Size of the array
+ * get_max - gets the maximum value in the array
+ *
+ * @array: array to get max value from
+ * @size: size of the array
+ *
+ * Return: maximum value in the array
+ */
+int get_max(int *array, size_t size)
+{
+	int max;
+	size_t i;
+
+	if (size < 2)
+		return (0);
+
+	max = array[0];	/* start from first index */
+
+	for (i = 1; i < size; i++)
+	{
+		if (max < array[i])
+			max = array[i];
+	}
+
+	return (max);
+}
+
+/**
+ * counting_sort - sorts an array using the counting
+ * sort algorithm
+ *
+ * @array: initial array
+ * @size: size of the array
  */
 void counting_sort(int *array, size_t size)
 {
-	int *count_array;
-    int *output;
-    int max = array[0];
-    size_t i;
+	int k = get_max(array, size), j, *position, *sumPosition, *sorted;
+	size_t i;
 
-    if (array == NULL || size < 2)
-        return;
+	if (k == 0)
+		return;
 
-    /* Find the maximum element in the array */
-    for (i = 1; i < size; i++)
-    {
-        if (array[i] > max)
-            max = array[i];
-    }
+	position = malloc(sizeof(int) * (k + 1));
+	if (!position)
+		return;
+	arr_zero_init(position, k + 1);
 
-    /* Allocate memory for the counting array */
-    count_array = malloc((max + 1) * sizeof(int));
-    if (count_array == NULL)
-        return;
+	for (i = 0; i < size; i++)
+		position[array[i]] += 1;    /* set one to the positions */
 
-    /* Initialize counting array elements to zero */
-    for (i = 0; i <= (size_t)max; i++)
-        count_array[i] = 0;
+	sumPosition = malloc(sizeof(int) * (k + 1));
+	if (!sumPosition)
+		return;
+	arr_zero_init(sumPosition, k + 1);
+	sumPosition[0] = position[0];   /* make first index equal */
 
-    /* Store count of each element in the input array */
-    for (i = 0; i < size; i++)
-        count_array[array[i]]++;
+	for (j = 1; j < (k + 1); j++)
+		sumPosition[j] = position[j] + sumPosition[j - 1];
 
-    /* Print the counting array */
-    printf("%d", count_array[0]);
-    for (i = 1; i <= (size_t)max; i++)
-        printf(", %d", count_array[i]);
-    printf("\n");
+	free(position), print_array(sumPosition, k + 1);
 
-    /* Modify the count array such that each element stores the
-     * position of the element in the output array */
-    for (i = 1; i <= (size_t)max; i++)
-        count_array[i] += count_array[i - 1];
+	sorted = malloc(sizeof(int) * size);
+	if (!sorted)
+		return;
+	arr_zero_init(sorted, size);
 
-    /* Build the output array */
-output = malloc(size * sizeof(int));
-if (output == NULL)
-{
-    free(count_array);
-    return;
-}
+	for (i = 0; i < size; i++)  /* get the sorted array */
+	{
+		sumPosition[array[i]] -= 1;
+		sorted[sumPosition[array[i]]] = array[i];
+	}
+	free(sumPosition);
 
-for (i = size; i > 0; i--)
-{
-    output[count_array[array[i - 1]] - 1] = array[i - 1];
-    count_array[array[i - 1]]--;
-}
-
-    /* Copy the output array to the original array */
-    for (i = 0; i < size; i++)
-        array[i] = output[i];
-
-    /* Free dynamically allocated memory */
-    free(count_array);
-    free(output);
+	for (i = 0; i < size; i++)  /* update array */
+		array[i] = sorted[i];
+	free(sorted);
 }
