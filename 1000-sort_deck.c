@@ -20,13 +20,13 @@ static int compare_cards(const void *a, const void *b)
 		return (kind_a - kind_b);
 
 	if (value_a == 'A')
-		return -1;
+		return (-1);
 	if (value_b == 'A')
-		return 1;
+		return (1);
 	if (value_a == 'K')
-		return -1;
+		return (-1);
 	if (value_b == 'K')
-		return 1;
+		return (1);
 	return (value_a - value_b);
 }
 
